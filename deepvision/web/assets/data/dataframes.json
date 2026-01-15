@@ -1,0 +1,166 @@
+{
+  "head": [
+    {
+      "part": "part_A",
+      "mode": "train_data",
+      "image": "IMG_1.jpg",
+      "width": 1024,
+      "height": 768,
+      "people_count": 1546
+    },
+    {
+      "part": "part_A",
+      "mode": "train_data",
+      "image": "IMG_10.jpg",
+      "width": 1024,
+      "height": 683,
+      "people_count": 920
+    },
+    {
+      "part": "part_A",
+      "mode": "train_data",
+      "image": "IMG_100.jpg",
+      "width": 1024,
+      "height": 654,
+      "people_count": 371
+    },
+    {
+      "part": "part_A",
+      "mode": "train_data",
+      "image": "IMG_101.jpg",
+      "width": 1024,
+      "height": 768,
+      "people_count": 298
+    },
+    {
+      "part": "part_A",
+      "mode": "train_data",
+      "image": "IMG_102.jpg",
+      "width": 1024,
+      "height": 768,
+      "people_count": 184
+    },
+    {
+      "part": "part_A",
+      "mode": "train_data",
+      "image": "IMG_103.jpg",
+      "width": 400,
+      "height": 400,
+      "people_count": 43
+    },
+    {
+      "part": "part_A",
+      "mode": "train_data",
+      "image": "IMG_104.jpg",
+      "width": 540,
+      "height": 405,
+      "people_count": 360
+    },
+    {
+      "part": "part_A",
+      "mode": "train_data",
+      "image": "IMG_105.jpg",
+      "width": 990,
+      "height": 632,
+      "people_count": 147
+    },
+    {
+      "part": "part_A",
+      "mode": "train_data",
+      "image": "IMG_106.jpg",
+      "width": 1024,
+      "height": 675,
+      "people_count": 584
+    },
+    {
+      "part": "part_A",
+      "mode": "train_data",
+      "image": "IMG_107.jpg",
+      "width": 800,
+      "height": 517,
+      "people_count": 121
+    },
+    {
+      "part": "part_A",
+      "mode": "train_data",
+      "image": "IMG_108.jpg",
+      "width": 1024,
+      "height": 767,
+      "people_count": 733
+    },
+    {
+      "part": "part_A",
+      "mode": "train_data",
+      "image": "IMG_109.jpg",
+      "width": 1024,
+      "height": 681,
+      "people_count": 862
+    }
+  ],
+  "group_stats": [
+    {
+      "part": "part_A",
+      "mode": "test_data",
+      "count": 182.0,
+      "mean": 433.31,
+      "std": 354.44,
+      "min": 66.0,
+      "25%": 211.0,
+      "50%": 307.5,
+      "75%": 500.75,
+      "max": 2256.0
+    },
+    {
+      "part": "part_A",
+      "mode": "train_data",
+      "count": 300.0,
+      "mean": 541.38,
+      "std": 505.16,
+      "min": 33.0,
+      "25%": 238.75,
+      "50%": 378.0,
+      "75%": 652.5,
+      "max": 3138.0
+    },
+    {
+      "part": "part_B",
+      "mode": "test_data",
+      "count": 316.0,
+      "mean": 123.8,
+      "std": 95.28,
+      "min": 9.0,
+      "25%": 54.75,
+      "50%": 93.0,
+      "75%": 167.0,
+      "max": 539.0
+    },
+    {
+      "part": "part_B",
+      "mode": "train_data",
+      "count": 400.0,
+      "mean": 122.88,
+      "std": 93.89,
+      "min": 12.0,
+      "25%": 50.75,
+      "50%": 99.0,
+      "75%": 161.0,
+      "max": 576.0
+    }
+  ],
+  "summary_cards": [
+    {
+      "part": "part_A",
+      "count": 482,
+      "mean": 500.57,
+      "max": 3138,
+      "min": 33
+    },
+    {
+      "part": "part_B",
+      "count": 716,
+      "mean": 123.28,
+      "max": 576,
+      "min": 9
+    }
+  ]
+}

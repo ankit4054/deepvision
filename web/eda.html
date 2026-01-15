@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeepVision | Data Visualization & EDA</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <h1>DeepVision<sup>AI</sup></h1>
+      <p>Exploratory data analysis of the ShanghaiTech crowd dataset powering DeepVision.</p>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a class="primary" href="eda.html">Data Visualization / EDA</a>
+        <a href="#frames">Data Frames</a>
+        <a href="#random">Random Samples</a>
+        <a href="#plots">Distribution & Density</a>
+      </div>
+    </aside>
+
+    <main>
+      <header class="hero">
+        <p class="badge">Dataset Pulse</p>
+        <h2>Exploratory Data Analysis</h2>
+        <p>The visuals and statistics below are auto-generated from `scripts/build_eda_assets.py`, which mines the
+          ShanghaiTech dataset, extracts random samples, and composes mathematical summaries for analysts.</p>
+        <div class="info-row">
+          <div class="info-card">
+            <span>Total labeled frames</span>
+            <strong data-metric="images">—</strong>
+          </div>
+          <div class="info-card">
+            <span>Avg. people per frame</span>
+            <strong data-metric="avg">—</strong>
+          </div>
+          <div class="info-card">
+            <span>Peak crowd count</span>
+            <strong data-metric="max">—</strong>
+          </div>
+          <div class="info-card">
+            <span>Minimum crowd count</span>
+            <strong data-metric="min">—</strong>
+          </div>
+        </div>
+      </header>
+
+      <section id="frames">
+        <h2>Data Frames Extracted from Code</h2>
+        <p class="section-subtitle">Preview of the consolidated dataframe built from both Part A and Part B splits.</p>
+        <div class="table-scroll">
+          <table id="head-table"></table>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>Mathematical Summary</h2>
+        <p class="section-subtitle">Descriptive statistics of people counts per subset (count, mean, quartiles, extrema).
+        </p>
+        <div class="table-scroll">
+          <table id="stats-table"></table>
+        </div>
+        <div class="grid" id="card-grid" style="margin-top: 24px;"></div>
+      </section>
+
+      <section id="random">
+        <h2>Random Images / Samples</h2>
+        <p class="section-subtitle">Automatically scraped from the dataset for Part A and Part B training splits with
+          annotation overlays.</p>
+        <div class="visual-grid" id="random-grid">
+          <figure>
+            <img data-random="0" alt="Random samples grid 1" />
+            <figcaption>Random subset of crowd patches with annotated head points.</figcaption>
+          </figure>
+          <figure>
+            <img data-random="1" alt="Random samples grid 2" />
+            <figcaption>Contrasting sparse vs dense regions captured in Part B.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="plots">
+        <h2>Distribution Plots & Density Map</h2>
+        <p class="section-subtitle">Histogram + boxplot summarizing people-count distributions and a density map demo
+          derived from ground-truth annotations.</p>
+        <div class="visual-grid">
+          <figure>
+            <img data-distribution="hist" alt="Histogram of crowd counts" />
+            <figcaption>Histogram showing how Part A skews dense while Part B captures lighter scenes.</figcaption>
+          </figure>
+          <figure>
+            <img data-distribution="box" alt="Box plot of crowd counts" />
+            <figcaption>Boxplot emphasizing the interquartile spread for each subset.</figcaption>
+          </figure>
+          <figure>
+            <img data-density alt="Density map comparison" />
+            <figcaption>Original frame vs. generated Gaussian density map (sum equals estimated crowd size).</figcaption>
+          </figure>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    async function fetchJSON(path) {
+      const res = await fetch(path);
+      if (!res.ok) throw new Error(`Unable to load ${path}`);
+      return res.json();
+    }
+
+    function renderTable(el, records) {
+      if (!records.length) {
+        el.innerHTML = "<caption>No data available</caption>";
+        return;
+      }
+      const columns = Object.keys(records[0]);
+      const thead = `<thead><tr>${columns.map(c => `<th>${c}</th>`).join("")}</tr></thead>`;
+      const rows = records
+        .map(row => `<tr>${columns.map(col => `<td>${row[col]}</td>`).join("")}</tr>`)
+        .join("");
+      el.innerHTML = `${thead}<tbody>${rows}</tbody>`;
+    }
+
+    function renderCards(container, cards) {
+      container.innerHTML = cards
+        .map(
+          card => `<article class="card">
+              <h3>${card.part.replace("_", " ").toUpperCase()}</h3>
+              <p><strong class="highlight">${card.count}</strong> frames analyzed</p>
+              <p>Mean crowd size: <span class="highlight">${card.mean}</span></p>
+              <p>Range: ${card.min} – ${card.max} people</p>
+            </article>`
+        )
+        .join("");
+    }
+
+    function applyMeta(meta) {
+      document.querySelector('[data-metric="images"]').textContent = meta.total_images.toLocaleString();
+      document.querySelector('[data-metric="avg"]').textContent = meta.avg_people_per_image;
+      document.querySelector('[data-metric="max"]').textContent = meta.max_people_detected;
+      document.querySelector('[data-metric="min"]').textContent = meta.min_people_detected;
+
+      const randomImgs = document.querySelectorAll("[data-random]");
+      randomImgs.forEach((node, idx) => {
+        node.src = `assets/images/${meta.assets.random_samples[idx]}`;
+      });
+
+      document.querySelector('[data-distribution="hist"]').src = `assets/images/${meta.assets.distribution.hist}`;
+      document.querySelector('[data-distribution="box"]').src = `assets/images/${meta.assets.distribution.box}`;
+      document.querySelector("[data-density]").src = `assets/images/${meta.assets.density_map}`;
+    }
+
+    async function init() {
+      try {
+        const [meta, frames] = await Promise.all([
+          fetchJSON("assets/data/meta.json"),
+          fetchJSON("assets/data/dataframes.json"),
+        ]);
+
+        renderTable(document.getElementById("head-table"), frames.head);
+        renderTable(document.getElementById("stats-table"), frames.group_stats);
+        renderCards(document.getElementById("card-grid"), frames.summary_cards);
+        applyMeta(meta);
+      } catch (error) {
+        console.error(error);
+        document.body.insertAdjacentHTML(
+          "beforeend",
+          `<div class="card" style="position:fixed;bottom:24px;right:24px;max-width:320px;background:#7f1d1d;color:#fff;">
+            <h3>Failed to load EDA assets</h3>
+            <p>${error.message}</p>
+          </div>`
+        );
+      }
+    }
+
+    init();
+  </script>
+</body>
+
+</html>
+

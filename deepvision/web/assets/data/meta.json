@@ -1,0 +1,17 @@
+{
+  "total_images": 1198,
+  "avg_people_per_image": 275.08,
+  "max_people_detected": 3138,
+  "min_people_detected": 9,
+  "assets": {
+    "random_samples": [
+      "samples_part_A_train_data.png",
+      "samples_part_B_train_data.png"
+    ],
+    "distribution": {
+      "hist": "distribution_hist.png",
+      "box": "distribution_box.png"
+    },
+    "density_map": "density_demo.png"
+  }
+}
